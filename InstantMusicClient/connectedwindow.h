@@ -6,6 +6,9 @@
 #include <QMessageBox>
 #include <QStringListModel>
 #include "../common.hpp"
+#include <QDir>
+#include <QDebug>
+#include <QRegExp>
 
 namespace Ui {
 class ConnectedWindow;
@@ -24,9 +27,12 @@ private slots:
     void list_music();
     void kill_client();
 
+    void on_lineEdit_textChanged(const QString &arg1);
+
 private:
     Ui::ConnectedWindow *ui;
     server_info s_info;
+    QStringList myList;
 
 };
 

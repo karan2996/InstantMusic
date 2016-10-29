@@ -13,7 +13,11 @@ ConnectedWindow::ConnectedWindow(server_info serv, QWidget *parent) :
     strcat(address, inet_ntoa(s_info.serv.sin_addr));
     ui->label->setText(address);
     connect(ui->actionDisconnect, SIGNAL(triggered(bool)), this, SLOT(kill_client()));
-    list_music();
+    //list_music();
+    QDir mypath("../InstantMusicServer/MusicProvider");
+    mypath.setFilter(QDir::Files);
+    myList=mypath.entryList();
+    ui->listWidget->addItems(myList);
 }
 
 ConnectedWindow::~ConnectedWindow()
@@ -49,7 +53,7 @@ void ConnectedWindow::fetch_music()
 //        }
 }
 
-void ConnectedWindow::list_music()
+/*void ConnectedWindow::list_music()
 {
     QStringList stringList;
 
@@ -76,7 +80,8 @@ void ConnectedWindow::list_music()
     model = new QStringListModel(this);
     model->setStringList(stringList);
     ui->listView->setModel(model);
-}
+}*/
+
 
 void ConnectedWindow::kill_client()
 {
@@ -84,4 +89,11 @@ void ConnectedWindow::kill_client()
     ew->show();
     ew->setWindowTitle("InstantMusic Client");
     this->close();
+}
+
+void ConnectedWindow::on_lineEdit_textChanged(const QString &arg1)
+{
+    QRegExp regExp(arg1,Qt::CaseInsensitive,QRegExp::Wildcard);
+    ui->listWidget->clear();
+    ui->listWidget->addItems(myList.filter(regExp));
 }
